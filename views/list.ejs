@@ -39,10 +39,9 @@
             수정
           </button>
         </button>
-        <button data-id="<%= posts[i]._id %>" class="detailBtn btn ">
-          상세 페이지
-        </button>
-        <a href="/detail"> 상세 페이지2</a>
+           <a href="detail/<%= posts[i]._id %>" data-id="<%= posts[i]._id %>" class="detailBtn btn ">
+           상세 페이지
+           </a>
         </li>
         <% } %>
       </ul>
@@ -68,11 +67,11 @@
           });
       });
 
-      $(".detailBtn").click(function (e) {
-        var contents_num = e.target.dataset.id;
-        console.log(contents_num);
-        $.ajax({ method: "GET" , url:`/detail/${contents_num}`, data: {_id:contents_num}});
-      });
+      // $(".detailBtn").click(function (e) {
+      //   var contents_num = e.target.dataset.id;
+      //   console.log(contents_num);
+      //   $.ajax({ method: "GET" , url:`/detail/${contents_num}`, data: {_id:contents_num}});
+      // });
 
     </script>
     <!-- Optional JavaScript -->
