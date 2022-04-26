@@ -25,7 +25,17 @@ var db;
 
 MongoClient.connect(process.env.DB_URL, function (err, client) {
   if (err) return console.log(err);
+
   db = client.db("todoapp");
+
+  ///////
+  ///////
+  ///////
+  ///////   홈
+  ///////
+  ///////
+  ///////
+  ///////
 
   app.get("/", function (req, res) {
     db.collection("post")
@@ -45,8 +55,8 @@ MongoClient.connect(process.env.DB_URL, function (err, client) {
       });
   });
 
-  app.get("/etc", function (req, res) {
-    res.render("etc.ejs");
+  app.get("/mypage", function (req, res) {
+    res.render("mypage.ejs");
   });
 
   app.get("/detail/:id", function (req, res) {
@@ -71,6 +81,15 @@ MongoClient.connect(process.env.DB_URL, function (err, client) {
       res.status(200).send({ message: "mission complete" });
     });
   });
+
+  ///////
+  ///////
+  ///////
+  ///////   게시물 추가.
+  ///////
+  ///////
+  ///////
+  ///////
 
   app.post("/add", function (req, res) {
     console.log(req.body);
@@ -101,12 +120,21 @@ MongoClient.connect(process.env.DB_URL, function (err, client) {
       }
     );
 
-    res.send("response complete");
+    res.render("home");
   });
   app.listen(8080, function () {
     console.log("server is now started");
   });
   //원하는 정보를 저장한다.
+
+  ///////
+  ///////
+  ///////
+  ///////   글 수정.
+  ///////
+  ///////
+  ///////
+  ///////
 
   app.get("/edit/:id", function (req, res) {
     db.collection("post").findOne(
@@ -127,6 +155,15 @@ MongoClient.connect(process.env.DB_URL, function (err, client) {
       }
     );
   });
+
+  ///////
+  ///////
+  ///////
+  ///////   로그인
+  ///////
+  ///////
+  ///////
+  ///////
 
   app.get("/login", function (req, res) {
     res.render("login.ejs");
@@ -174,6 +211,69 @@ MongoClient.connect(process.env.DB_URL, function (err, client) {
   });
 
   passport.deserializeUser(function (아이디, done) {
-    done(null, {});
+    db.collection("login").findOne({ id: 아이디 }, function (에러, 결과) {
+      done(null, 결과);
+    });
+  });
+
+  app.get("/mypage", 로그인했니, function (요청, 응답) {
+    console.log(요청.user);
+    응답.render("mypage.ejs", {});
+  });
+
+  function 로그인했니(요청, 응답, next) {
+    if (요청.user) {
+      next();
+    } else {
+      응답.send("로그인안하셨는데요?");
+    }
+  }
+
+  ///////
+  ///////
+  ///////
+  ///////   회원 가입.
+  ///////
+  ///////
+  ///////
+  ///////
+
+  app.get("/signin", function (요청, 응답) {
+    응답.render("signin.ejs");
+  });
+
+  app.post("/signin-complete", function (req, res) {
+    console.log(req.body.signinID);
+    console.log(req.body.signinPW);
+    console.log(typeof req.body.signinID);
+    console.log(typeof req.body.signinPW);
+
+    db.collection("login").findOne(
+      {
+        id: String(req.body.signinID),
+      },
+      function (err, result) {
+        if (err) {
+          console.log(err);
+        }
+        console.log(result);
+      }
+    );
+    db.collection("login").insertOne(
+      {
+        id: req.body.signinId,
+        pw: req.body.signinPw,
+      },
+      function (err, result) {
+        if (err) {
+          console.log(err);
+        }
+        res.render("login.ejs");
+        console.log(req.body.signinID);
+        console.log(req.body.signinPW);
+        console.log(typeof req.body.signinID);
+        console.log(typeof req.body.signinPW);
+      }
+    );
   });
 });
