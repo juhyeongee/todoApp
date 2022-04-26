@@ -35,7 +35,7 @@
           >
             삭제
           </button>
-          <button data-id="<%= posts[i]._id %>" class="editBtn btn btn-primary">
+          <button onclick="location.href = 'edit/<%= posts[i]._id %>' " data-id="<%= posts[i]._id %>" class="editBtn btn btn-primary">
             수정
           </button>
         </button>
@@ -66,6 +66,23 @@
             console.log("에러임");
           });
       });
+
+      // $(".editBtn").click(function (e) {
+      //   var contents_num = e.target.dataset.id;
+      //   var clicked = $(this);
+      //   //e.target = ㅈㅣ그ㅁ 클ㅣㄱ한거 this = ㅈㅣ그ㅁ 이벤트 동작하는 곳
+      //   $.ajax({
+      //     method: "GET",
+      //     url: `edit/{contents_num}`,
+      //   })
+      //     .done(function (result) {
+      //       console.log('성공')})
+      //     .fail(function (err) {
+      //       console.log("에러임");
+      //     });
+      // });
+
+      
 
       // $(".detailBtn").click(function (e) {
       //   var contents_num = e.target.dataset.id;

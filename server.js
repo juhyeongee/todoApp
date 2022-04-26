@@ -5,6 +5,7 @@ const MongoClient = require("mongodb").MongoClient;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/public", express.static("public")); //이걸 미들웨어라고 하는데?
 app.set("view engine", "ejs");
+
 const methoOverride = require("method-override");
 app.use(methoOverride("_method"));
 
@@ -111,20 +112,15 @@ MongoClient.connect(process.env.DB_URL, function (err, client) {
     db.collection("post").findOne(
       { _id: parseInt(req.params.id) }, //파라미터이용..
       function (err, result) {
-        res.render("/edit.ejs", { post: result }); //찾은 결과를 edit.ejs로 보냄.
+        res.render("edit.ejs", { data: result }); //찾은 결과를 edit.ejs로 보냄.
       }
     );
   });
 
   app.put("/edit", function (req, res) {
     db.collection("post").updateOne(
-      { _id: parseInt(req.body.id) },
-      {
-        $set: {
-          date: req.body.date,
-          todo: req.body.todo,
-        },
-      },
+      { _id: parseInt(req.body.iddd) },
+      { $set: { todo: req.body.todo, date: req.body.date } },
       function (err, result) {
         console.log("수정완료");
         res.redirect("/list");
